@@ -1,4 +1,5 @@
 import 'package:ansar/models/model_for_client/user_crud.dart';
+import 'package:intl/intl.dart';
 
 class Documents {
   int id;
@@ -28,8 +29,8 @@ class Documents {
       userUpdated: UserCrud.fromJson(json['user_updated']),
       name: json['name'],
       documents: json['documents'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      createdAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['created_at'])),
+      updatedAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['updated_at'])),
       client: json['client'],
     );
   }

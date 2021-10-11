@@ -1,9 +1,18 @@
 import 'package:ansar/get_controller/client_controller.dart';
 import 'package:ansar/models/client_model.dart';
+import 'package:ansar/screens/detail_screens/city_detail_screen.dart';
+import 'package:ansar/screens/detail_screens/document_detail_screen.dart';
+import 'package:ansar/screens/detail_screens/notes_detaol_screens.dart';
+import 'package:ansar/screens/detail_screens/paymant_detail_screen.dart';
+import 'package:ansar/screens/detail_screens/tariff_detail_screen.dart';
+import 'package:ansar/screens/detail_screens/uder_detail_screen.dart';
 import 'package:ansar/utils/color_constants.dart';
+import 'package:ansar/utils/text_style_constants.dart';
 import 'package:ansar/widgets/home_screen_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
@@ -39,8 +48,7 @@ class _DetailScreenState extends State<DetailScreen> {
           widget.documents = clientModel.documents;
           widget.notesSet = clientModel.notesSet;
           widget.payments = clientModel.payments;
-          setState(() {
-          });
+          setState(() {});
         },
         child: SingleChildScrollView(
           child: MyContainer(
@@ -50,222 +58,161 @@ class _DetailScreenState extends State<DetailScreen> {
               MyContainer(
                 color: Colors.transparent,
                 children: [
+                  // widget.item.contractAt
                   ClientRow(title: "Аты :", value: widget.item.name),
                   ClientRow(title: "Ф.О.И :", value: widget.item.lastName),
                   ClientRow(title: "Акчасы :", value: "${widget.item.totalMoney}"),
-                  ClientRow(title: "contract_at:", value: widget.item.contractAt),
-                  ClientRow(title: "created_at", value: widget.item.createdAt),
-                  ClientRow(title: "updated_at", value: widget.item.updatedAt),
-                  ClientRow(title: "status:", value: widget.item.status),
-                  ClientRow(title: "end_at:", value: widget.item.endAt),
-                  ClientRow(title: "first_payments", value: "${widget.item.firstPaymentsEndAt}"),
+                  ClientRow(title: "Контрактын Болгон күнү", value: "${widget.item.contractAt}"),
+                  ClientRow(title: "Түзүлгөн күн", value: widget.item.createdAt),
+                  ClientRow(title: "Оңдолгон күн", value: widget.item.updatedAt),
+                  ClientRow(title: "Статус", value: widget.item.status),
+                  ClientRow(title: "Бүтүү күнү", value: widget.item.endAt),
+                  ClientRow(
+                      title: "Биринчи тологон күнү", value: "${widget.item.firstPaymentsEndAt}"),
                 ],
               ),
               const SizedBox(height: 20),
-              widget.item.documents != []
+              widget.item.documents.isNotEmpty
                   ? MyContainer(
                       color: Colors.transparent,
                       children: [
                         MyText(text: "Документы", size: Get.width / 15),
                         const SizedBox(height: 10),
-                        MyContainer(
-                          borderRadius: 10,
-                          padding: const EdgeInsets.all(10),
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: widget.item.documents.length,
-                              itemBuilder: (context, index) {
-                                final dynamic doc = widget.item.documents;
-                                return Column(
-                                  children: [
-                                    ClientRow(
-                                      title: "ID",
-                                      value: "${widget.item.documents[index].id}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "Аталышы",
-                                      value: "${widget.item.documents[index].name}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "documents",
-                                      value: "${widget.item.documents[index].documents}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "created_at",
-                                      value: "${widget.item.documents[index].createdAt}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "updated_at",
-                                      value: "${widget.item.documents[index].updatedAt}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "client:",
-                                      value: "${widget.item.documents[index].client}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "user_created",
-                                      value: "${widget.item.documents[index].userCreated.username}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    ClientRow(
-                                      title: "user_updated",
-                                      value: "${widget.item.documents[index].userUpdated.username}",
-                                      color: MyColors.primaryColor,
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 10,
-                                      color: MyColors.containerBack,
-                                    )
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
+                        ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: widget.item.documents.length,
+                          itemBuilder: (context, index) {
+                            final dynamic doc = widget.item.documents[index];
+                            return MyContainer(
+                              margin: const EdgeInsets.only(top: 10, bottom: 10),
+                              borderRadius: 10,
+                              border: Border.all(
+                                color: MyColors.borderColor,
+                                width: 1.5,
+                              ),
+                              children: [
+                                ListTile(
+                                  onTap: () {
+                                    Get.to(DocumentDetailScreen(doc: doc));
+                                  },
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        " ${index + 1}  ${doc.name}",
+                                        style: MyTextStyle.cardItemName,
+                                      ),
+                                      FaIcon(
+                                        FontAwesomeIcons.chevronRight,
+                                        color: MyColors.cardIcon,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         )
                       ],
                     )
                   : Container(),
-              const SizedBox(height: 30),
-              widget.item.notesSet != []
+              const SizedBox(),
+              widget.item.notesSet.isNotEmpty
                   ? MyContainer(
                       color: Colors.transparent,
                       children: [
                         MyText(text: "Эстөөлөр", size: Get.width / 15),
                         const SizedBox(height: 10),
-                        MyContainer(
-                          borderRadius: 10,
-                          padding: const EdgeInsets.all(10),
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: widget.item.notesSet.length,
-                              itemBuilder: (context, index) {
-                                final dynamic doc = widget.item.notesSet;
-                                return Column(
-                                  children: [
-                                    ClientRow(
-                                      title: "ID",
-                                      value: "${widget.item.notesSet[index].id}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "Текст",
-                                      value: "${widget.item.notesSet[index].message}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "created_at",
-                                      value: "${widget.item.notesSet[index].createdAt}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "updated_at",
-                                      value: "${widget.item.notesSet[index].updatedAt}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "client:",
-                                      value: "${widget.item.notesSet[index].client}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "user_created",
-                                      value: "${widget.item.notesSet[index].userCreated.username}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "user_updated",
-                                      value: "${widget.item.notesSet[index].userUpdated.username}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 10,
-                                      color: MyColors.containerBack,
-                                    )
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
+                        ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: widget.item.notesSet.length,
+                          itemBuilder: (context, index) {
+                            final dynamic doc = widget.item.notesSet[index];
+                            return MyContainer(
+                              margin: const EdgeInsets.only(top: 10, bottom: 10),
+                              borderRadius: 10,
+                              border: Border.all(
+                                color: MyColors.borderColor,
+                                width: 1.5,
+                              ),
+                              children: [
+                                ListTile(
+                                  onTap: () {
+                                    Get.to(NoteDetailScreen(doc: doc));
+                                  },
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          " ${index + 1}  ${doc.message}",
+                                          style: MyTextStyle.cardItemName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      FaIcon(
+                                        FontAwesomeIcons.chevronRight,
+                                        color: MyColors.cardIcon,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         )
                       ],
                     )
                   : Container(),
               const SizedBox(height: 30),
-              widget.item.payments != []
+              widget.item.payments.isNotEmpty
                   ? MyContainer(
                       color: Colors.transparent,
                       children: [
                         MyText(text: "Төлөмдөр", size: Get.width / 15),
                         const SizedBox(height: 10),
-                        MyContainer(
-                          borderRadius: 10,
-                          padding: const EdgeInsets.all(10),
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: widget.item.payments.length,
-                              itemBuilder: (context, index) {
-                                final dynamic doc = widget.item.payments;
-                                return Column(
-                                  children: [
-                                    ClientRow(
-                                      title: "ID",
-                                      value: "${widget.item.payments[index].id}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "Аталышы",
-                                      value: "${widget.item.payments[index].name}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "created_at",
-                                      value: "${widget.item.payments[index].createdAt}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "updated_at",
-                                      value: "${widget.item.payments[index].updatedAt}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "client:",
-                                      value: "${widget.item.payments[index].client}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "user_created",
-                                      value: "${widget.item.payments[index].userCreated.username}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    ClientRow(
-                                      title: "user_updated",
-                                      value: "${widget.item.payments[index].userUpdated.username}",
-                                      color: MyColors.containerBack,
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 10,
-                                      color: MyColors.containerBack,
-                                    )
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
+                        ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: widget.item.payments.length,
+                          itemBuilder: (context, index) {
+                            final dynamic doc = widget.item.payments[index];
+                            return MyContainer(
+                              margin: const EdgeInsets.only(top: 10, bottom: 10),
+                              borderRadius: 10,
+                              border: Border.all(
+                                color: MyColors.borderColor,
+                                width: 1.5,
+                              ),
+                              children: [
+                                ListTile(
+                                  onTap: () {
+                                    Get.to(PaymentDetailScreen(doc: doc));
+                                  },
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          " ${index + 1}  ${doc.name}",
+                                          style: MyTextStyle.cardItemName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      FaIcon(
+                                        FontAwesomeIcons.chevronRight,
+                                        color: MyColors.cardIcon,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         )
                       ],
                     )
@@ -277,46 +224,37 @@ class _DetailScreenState extends State<DetailScreen> {
                   MyText(text: "Шаар", size: Get.width / 15),
                   const SizedBox(height: 10),
                   MyContainer(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     borderRadius: 10,
-                    padding: const EdgeInsets.all(10),
+                    border: Border.all(
+                      color: MyColors.borderColor,
+                      width: 1.5,
+                    ),
                     children: [
-                      ClientRow(
-                        title: "ID",
-                        value: "${widget.item.city.id}",
-                        color: MyColors.containerBack,
+                      ListTile(
+                        onTap: () {
+                          Get.to(CityDetailScreen(doc: widget.item.city));
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "${widget.item.city.name}",
+                                style: MyTextStyle.cardItemName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            FaIcon(
+                              FontAwesomeIcons.chevronRight,
+                              color: MyColors.cardIcon,
+                            ),
+                          ],
+                        ),
                       ),
-                      ClientRow(
-                        title: "Аталышы",
-                        value: "${widget.item.city.name}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "user_created_at",
-                        value: "${widget.item.city.userCreated.username}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "user_updated_at",
-                        value: "${widget.item.city.userUpdated.username}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "createdAt:",
-                        value: "${widget.item.city.createdAt}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "updatedAt",
-                        value: "${widget.item.city.updatedAt}",
-                        color: MyColors.containerBack,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 10,
-                        color: MyColors.containerBack,
-                      )
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
@@ -326,46 +264,37 @@ class _DetailScreenState extends State<DetailScreen> {
                   MyText(text: "Тариф", size: Get.width / 15),
                   const SizedBox(height: 10),
                   MyContainer(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     borderRadius: 10,
-                    padding: const EdgeInsets.all(10),
+                    border: Border.all(
+                      color: MyColors.borderColor,
+                      width: 1.5,
+                    ),
                     children: [
-                      ClientRow(
-                        title: "ID",
-                        value: "${widget.item.tariff.id}",
-                        color: MyColors.containerBack,
+                      ListTile(
+                        onTap: () {
+                          Get.to(TariffDetailScreen(doc: widget.item.tariff));
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "${widget.item.tariff.name}",
+                                style: MyTextStyle.cardItemName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            FaIcon(
+                              FontAwesomeIcons.chevronRight,
+                              color: MyColors.cardIcon,
+                            ),
+                          ],
+                        ),
                       ),
-                      ClientRow(
-                        title: "Аталышы",
-                        value: "${widget.item.tariff.name}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "user_created_at",
-                        value: "${widget.item.tariff.userCreated.username}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "user_updated_at",
-                        value: "${widget.item.tariff.userUpdated.username}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "createdAt:",
-                        value: "${widget.item.tariff.createdAt}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "updatedAt",
-                        value: "${widget.item.tariff.updatedAt}",
-                        color: MyColors.containerBack,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 10,
-                        color: MyColors.containerBack,
-                      )
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
@@ -375,31 +304,37 @@ class _DetailScreenState extends State<DetailScreen> {
                   MyText(text: "Түзгөн колдонуучу", size: Get.width / 15),
                   const SizedBox(height: 10),
                   MyContainer(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     borderRadius: 10,
-                    padding: const EdgeInsets.all(10),
+                    border: Border.all(
+                      color: MyColors.borderColor,
+                      width: 1.5,
+                    ),
                     children: [
-                      ClientRow(
-                        title: "Колдоннучу аты",
-                        value: "${widget.item.userCreated.username}",
-                        color: MyColors.containerBack,
+                      ListTile(
+                        onTap: () {
+                          Get.to(UserDetailScreen(doc: widget.item.userCreated));
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "${widget.item.userCreated.username}",
+                                style: MyTextStyle.cardItemName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            FaIcon(
+                              FontAwesomeIcons.chevronRight,
+                              color: MyColors.cardIcon,
+                            ),
+                          ],
+                        ),
                       ),
-                      ClientRow(
-                        title: "Аты",
-                        value: "${widget.item.userCreated.firstName}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "Ф.О.И",
-                        value: "${widget.item.userCreated.lastName}",
-                        color: MyColors.containerBack,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 10,
-                        color: MyColors.containerBack,
-                      )
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
@@ -409,31 +344,37 @@ class _DetailScreenState extends State<DetailScreen> {
                   MyText(text: "Оңдогон колдонуучу", size: Get.width / 15),
                   const SizedBox(height: 10),
                   MyContainer(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     borderRadius: 10,
-                    padding: const EdgeInsets.all(10),
+                    border: Border.all(
+                      color: MyColors.borderColor,
+                      width: 1.5,
+                    ),
                     children: [
-                      ClientRow(
-                        title: "Колдоннучу аты",
-                        value: "${widget.item.userUpdated.username}",
-                        color: MyColors.containerBack,
+                      ListTile(
+                        onTap: () {
+                          Get.to(UserDetailScreen(doc: widget.item.userUpdated));
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "${widget.item.userUpdated.username}",
+                                style: MyTextStyle.cardItemName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            FaIcon(
+                              FontAwesomeIcons.chevronRight,
+                              color: MyColors.cardIcon,
+                            ),
+                          ],
+                        ),
                       ),
-                      ClientRow(
-                        title: "Аты",
-                        value: "${widget.item.userUpdated.firstName}",
-                        color: MyColors.containerBack,
-                      ),
-                      ClientRow(
-                        title: "Ф.О.И",
-                        value: "${widget.item.userUpdated.lastName}",
-                        color: MyColors.containerBack,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 10,
-                        color: MyColors.containerBack,
-                      )
                     ],
-                  )
+                  ),
                 ],
               ),
             ],

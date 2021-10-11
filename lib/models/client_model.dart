@@ -4,6 +4,7 @@ import 'package:ansar/models/client_list_model/note_model.dart';
 import 'package:ansar/models/client_list_model/payment_model.dart';
 import 'package:ansar/models/model_for_client/tariff_model.dart';
 import 'package:ansar/models/model_for_client/user_crud.dart';
+import 'package:intl/intl.dart';
 
 class ClientModel {
   int id;
@@ -60,13 +61,13 @@ class ClientModel {
       userUpdated: UserCrud.fromJson(json['user_updated']),
       name: json['name'],
       lastName: json['last_name'],
-      contractAt: json['contract_at'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      contractAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['contract_at'])),
+      createdAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['created_at'])),
+      updatedAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['updated_at'])),
       totalMoney: json['total_money'],
       status: json['status'],
-      endAt: json['end_at'],
-      firstPaymentsEndAt: json['first_payments_end_at'],
+      endAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['end_at'])),
+      firstPaymentsEndAt: DateFormat('dd/MM/yyy kk:mm').format(DateTime.parse(json['first_payments_end_at'])),
     );
   }
 }

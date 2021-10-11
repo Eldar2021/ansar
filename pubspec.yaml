@@ -44,6 +44,8 @@ dependencies:
   # url_launcher:
   url_launcher: ^6.0.10
   whatsapp_unilink: ^2.0.0
+  # pdf view
+  syncfusion_flutter_pdfviewer: ^19.3.44-beta
 
   # hive: ^2.0.4
   # hive_flutter: ^1.1.0
