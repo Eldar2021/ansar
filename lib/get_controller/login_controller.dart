@@ -1,6 +1,5 @@
 import 'package:ansar/screens/client_screen.dart';
 import 'package:ansar/screens/home_screen.dart';
-import 'package:ansar/screens/auth_screen/login_screen.dart';
 import 'package:ansar/services/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,17 +12,14 @@ class LoginController extends GetxController {
 
   Future getLogin() async {
     try {
-      Get.defaultDialog(content: CircularProgressIndicator());
-      var token = box.read("login");
-      Get.back();
+      var token = box.read('login');
       if (token.isNotEmpty) {
-        Get.to(() => ClientScreen());
+        Get.offAll(()=>ClientScreen());
       } else {
-        Get.to(() => LoginScreen());
+        Get.offAll(()=>HomeScreen());
       }
     } catch (e) {
-      print(e);
-      Get.to(() => LoginScreen());
+      Get.offAll(()=>HomeScreen());
     }
   }
 
@@ -33,11 +29,10 @@ class LoginController extends GetxController {
       String token = await loginServices.authSignIn(username, password);
       box.write('login', token);
       Get.back();
-      Get.off(() => ClientScreen());
+      Get.offAll(() => ClientScreen());
     } catch (e) {
       Get.back();
       Get.defaultDialog(title: "$e");
-      print(e);
     }
   }
 
@@ -47,7 +42,7 @@ class LoginController extends GetxController {
       box.remove('login');
       await loginServices.authLogout();
       Get.back();
-      Get.off(() => HomeScreen());
+      Get.offAll(() => HomeScreen());
     } catch (e) {
       Get.back();
       Get.defaultDialog(title: "$e");

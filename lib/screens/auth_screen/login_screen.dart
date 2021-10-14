@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                 }
               },
               child: Text("кирүү"),
-            )
+            ),
           ],
         ),
       ),

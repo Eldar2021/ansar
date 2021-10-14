@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:ansar/get_controller/login_controller.dart';
 import 'package:ansar/screens/home_screen.dart';
+import 'package:ansar/screens/splash_screen/splash_screen.dart';
 import 'package:ansar/utils/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

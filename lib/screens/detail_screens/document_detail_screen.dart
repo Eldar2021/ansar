@@ -32,22 +32,23 @@ class DocumentDetailScreen extends StatelessWidget {
             ClientRow(title: "Түзгөн колдонуучу", value: "${doc.userCreated.username}"),
             ClientRow(title: "Оңдогон колдонуучу", value: "${doc.userUpdated.username}"),
             SizedBox(height: 30),
-            if (doc.documents.endsWith("png") || doc.documents.endsWith("jpg"))
+            if (doc.documents.endsWith("pdf"))
+              Container(
+                height: 500,
+                width: double.infinity,
+                child: SfPdfViewer.network(
+                  "${doc.documents}",
+                  scrollDirection: PdfScrollDirection.horizontal,
+                ),
+              )
+            else
               MyContainer(
                 children: [
                   CachedNetworkImage(
                     imageUrl: "${doc.documents}",
                   ),
                 ],
-              )
-            else if (doc.documents.endsWith("pdf"))
-              Container(
-                height: 500,
-                width: double.infinity,
-                child: SfPdfViewer.network("${doc.documents}", scrollDirection: PdfScrollDirection.horizontal,),
-              )
-            else
-              Text("${doc.documents}"),
+              ),
           ],
         ),
       ),

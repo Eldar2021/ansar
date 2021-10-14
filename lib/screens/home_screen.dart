@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'package:ansar/get_controller/login_controller.dart';
+import 'package:ansar/screens/auth_screen/login_screen.dart';
 import 'package:ansar/services/url_services.dart';
 import 'package:ansar/utils/color_constants.dart';
 import 'package:ansar/widgets/home_screen_widgets.dart';
@@ -11,7 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
-  final LoginController loginController = Get.put(LoginController());
+
+ final LoginController loginController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +31,14 @@ class HomeScreen extends StatelessWidget {
           Image.asset("assets/images/logo.png"),
           ElevatedButton(
             onPressed: () {
-              loginController.getLogin();
+              // loginController.getLogin();
+              Get.to(LoginScreen());
             },
             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(MyColors.borderColor)),
             child: DotListTitle(
               function: () {
-                loginController.getLogin();
+                // loginController.getLogin();
+                Get.to(LoginScreen());
               },
               child: FaIcon(FontAwesomeIcons.usersCog, color: MyColors.myWhite),
               text: "Администрация",

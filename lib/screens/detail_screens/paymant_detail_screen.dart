@@ -16,7 +16,7 @@ class PaymentDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: MyColors.containerBack,
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -32,22 +32,23 @@ class PaymentDetailScreen extends StatelessWidget {
             ClientRow(title: "Түзгөн колдонуучу", value: "${doc.userCreated.username}"),
             ClientRow(title: "Оңдогон колдонуучу", value: "${doc.userUpdated.username}"),
             SizedBox(height: 30),
-            if (doc.payments.endsWith("png") || doc.payments.endsWith("jpg"))
+            if (doc.payments.endsWith("pdf"))
+              Container(
+                height: 500,
+                width: double.infinity,
+                child: SfPdfViewer.network(
+                  "${doc.payments}",
+                  scrollDirection: PdfScrollDirection.horizontal,
+                ),
+              )
+            else
               MyContainer(
                 children: [
                   CachedNetworkImage(
                     imageUrl: "${doc.payments}",
                   ),
                 ],
-              )
-            else if (doc.payments.endsWith("pdf"))
-              Container(
-                height: 500,
-                width: double.infinity,
-                child: SfPdfViewer.network("${doc.payments}", scrollDirection: PdfScrollDirection.horizontal,),
-              )
-            else
-              Text("${doc.payments}"),
+              ),
           ],
         ),
       ),
