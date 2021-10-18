@@ -1,6 +1,14 @@
+import 'package:hive/hive.dart';
+
+part 'user_crud.g.dart';
+
+@HiveType(typeId: 3)
 class UserCrud {
+  @HiveField(0)
   String username;
+  @HiveField(1)
   String firstName;
+  @HiveField(2)
   String lastName;
 
   UserCrud({

@@ -13,7 +13,7 @@ class ClientScreen extends StatefulWidget {
 }
 
 class _ClientScreenState extends State<ClientScreen> {
-  final LoginController loginController = Get.find();
+  final LoginController loginController = Get.put(LoginController());
   final ClientController clientController = Get.put(ClientController());
 
   @override
@@ -21,6 +21,8 @@ class _ClientScreenState extends State<ClientScreen> {
     clientController.getClients();
     // TODO: implement initState
     super.initState();
+    Future.delayed(Duration(seconds: 3));
+    clientController.internet();
   }
 
   @override
@@ -29,7 +31,7 @@ class _ClientScreenState extends State<ClientScreen> {
       appBar: buildAppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
-          clientController.getClients();
+          clientController.internet();
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),

@@ -14,39 +14,50 @@ class LoginController extends GetxController {
     try {
       var token = box.read('login');
       if (token.isNotEmpty) {
-        Get.offAll(()=>ClientScreen());
+        Get.offAll(() => ClientScreen());
       } else {
-        Get.offAll(()=>HomeScreen());
+        Get.offAll(() => HomeScreen());
       }
     } catch (e) {
-      Get.offAll(()=>HomeScreen());
+      Get.offAll(() => HomeScreen());
     }
   }
 
   Future<void> authController(String username, String password) async {
     try {
-      Get.defaultDialog(content: CircularProgressIndicator());
+      Get.defaultDialog(content: CircularProgressIndicator(), title: "Текшерилүүдө");
       String token = await loginServices.authSignIn(username, password);
       box.write('login', token);
       Get.back();
       Get.offAll(() => ClientScreen());
     } catch (e) {
       Get.back();
-      Get.defaultDialog(title: "$e");
+      Get.defaultDialog(title: "Ката", middleText: "Кирүү логининиңиз же сыр сөзүңүз ката бар");
     }
   }
 
   Future<void> logOutController() async {
-    try {
-      Get.defaultDialog(content: CircularProgressIndicator());
-      box.remove('login');
-      await loginServices.authLogout();
-      Get.back();
-      Get.offAll(() => HomeScreen());
-    } catch (e) {
-      Get.back();
-      Get.defaultDialog(title: "$e");
-      print(e);
-    }
+    Get.defaultDialog(
+        title: "Колдонуучу логинден чыгуу",
+        middleText:
+            " Логинден чыгууну кааласыңыз Ооба баскычын, артка кайтуу үчүн Жок баскычын басыңыз.",
+        textCancel: "Жок",
+        textConfirm: "Ооба",
+        onCancel: () {
+          Get.back();
+        },
+        onConfirm: () async {
+          try {
+            Get.defaultDialog(content: CircularProgressIndicator(), title: "Аткарылууда");
+            box.remove('login');
+            await loginServices.authLogout();
+            Get.back();
+            Get.offAll(() => HomeScreen());
+          } catch (e) {
+            Get.back();
+            Get.defaultDialog(title: "Процесс аткарылган жок");
+            print(e);
+          }
+        });
   }
 }

@@ -15,7 +15,7 @@ class ClientCard extends StatelessWidget {
     required this.clients,
   }) : super(key: key);
 
-  final List<ClientModel> clients;
+  final List<dynamic> clients;
 
   @override
   Widget build(BuildContext context) {
